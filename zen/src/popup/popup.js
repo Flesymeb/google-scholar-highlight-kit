@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const arxivSearchButton = document.getElementById('arxiv-search-button');
     const githubButton = document.getElementById('github-button');
     const resultsBox = document.getElementById('results');
+    const platformRow = document.getElementById('platform-row');
 
     const repoUrl = 'https://github.com/Flesymeb/google-scholar-highlight-kit';
 
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updatePlatformAvailability(paper) {
         resetPlatformIcons();
+        platformRow.hidden = !paper;
         if (!paper) return;
 
         // arXiv: the Scholar result already links the preprint when one exists.
@@ -74,9 +76,9 @@ document.addEventListener('DOMContentLoaded', function() {
         checkPlatform('huggingface', title, hfSearchButton);
     }
 
-    function makeActionButton(label, url) {
+    function makeActionButton(label, url, noCaret) {
         const btn = document.createElement('button');
-        btn.className = 'paper-action';
+        btn.className = 'paper-action' + (noCaret ? ' no-caret' : '');
         btn.type = 'button';
         btn.textContent = label;
         btn.addEventListener('click', function() {
@@ -126,10 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const card = document.createElement('div');
         card.className = 'paper-card';
 
-        const label = document.createElement('div');
-        label.className = 'paper-card-label';
-        label.textContent = 'This paper';
-
         const title = document.createElement('a');
         title.className = 'result-title paper-card-title';
         title.textContent = paper.title;
@@ -139,25 +137,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const meta = document.createElement('div');
         meta.className = 'result-meta';
-        meta.textContent = paper.meta + (paper.citedText ? '  ·  ' + paper.citedText : '');
+        meta.textContent = paper.meta;
+
+        const bottom = document.createElement('div');
+        bottom.className = 'paper-bottom';
 
         const actions = document.createElement('div');
         actions.className = 'paper-actions';
         if (paper.clusterId) {
             actions.appendChild(makeActionButton('Cite', 'https://scholar.google.com/scholar?output=cite&cluster=' + paper.clusterId));
-            actions.appendChild(makeActionButton('BibTeX', 'https://scholar.google.com/scholar.bib?hl=en&cluster=' + paper.clusterId));
-        }
-        if (paper.citedHref) {
-            actions.appendChild(makeActionButton('Cited by', absoluteScholar(paper.citedHref)));
+            actions.appendChild(makeActionButton('BibTeX', 'https://scholar.google.com/scholar.bib?hl=en&cluster=' + paper.clusterId, true));
         }
         if (paper.relatedHref) {
-            actions.appendChild(makeActionButton('Related', absoluteScholar(paper.relatedHref)));
+            actions.appendChild(makeActionButton('Related articles', absoluteScholar(paper.relatedHref), true));
         }
 
-        card.appendChild(label);
+        const citeMatch = paper.citedText.match(/Cited by (\d+)/);
+        const citeCount = document.createElement('button');
+        citeCount.className = 'cite-count' + (paper.citedHref ? ' clickable' : '');
+        citeCount.type = 'button';
+        const num = document.createElement('span');
+        num.className = 'cite-num';
+        num.textContent = citeMatch ? Number(citeMatch[1]).toLocaleString() : '—';
+        const label = document.createElement('span');
+        label.className = 'cite-label';
+        label.textContent = 'Citations';
+        citeCount.appendChild(num);
+        citeCount.appendChild(label);
+        if (paper.citedHref) {
+            citeCount.addEventListener('click', function() {
+                openTab(absoluteScholar(paper.citedHref));
+            });
+        }
+
+        bottom.appendChild(actions);
+        bottom.appendChild(citeCount);
+
         card.appendChild(title);
         card.appendChild(meta);
-        if (actions.firstChild) card.appendChild(actions);
+        card.appendChild(bottom);
         return card;
     }
 
