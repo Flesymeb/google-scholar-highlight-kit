@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Google Scholar Highlight Kit",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "See first, co-first, second, corresponding, and last-author papers with authorship metrics on Google Scholar profiles. Zen/Firefox port with polished UI.",
   "permissions": [
     "storage"

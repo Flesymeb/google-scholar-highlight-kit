@@ -9,49 +9,26 @@ window.uiManager = (function () {
 
     const filterHTML = `
       <div id="author-highlighter-controls" class="author-highlighter-controls">
-        <h3><span class="title-container">Filters<span class="info-icon" data-tooltip="Co-first: Beginning authors marked with symbols (* † ‡ § # ✉).&#10;Corresponding: Non-beginning authors marked with symbols (* † ‡ § # ✉)."><svg focusable="false" width="16" height="16" viewBox="0 0 24 24" class=" NMm5M" style="fill: currentColor"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg></span></span></h3>
-        <div class="filter-container">
-          <label>Highlight:</label>
-          <div class="filter-options">
-            <div>
-              <input type="checkbox" id="first-author-filter" checked>
-              <label for="first-author-filter">First</label>
-            </div>
-            <div>
-              <input type="checkbox" id="co-first-author-filter" checked>
-              <label for="co-first-author-filter">Co-First</label>
-            </div>
-            <div>
-              <input type="checkbox" id="second-author-filter" checked>
-              <label for="second-author-filter">Second</label>
-            </div>
-            <div>
-              <input type="checkbox" id="corresponding-author-filter" checked>
-              <label for="corresponding-author-filter">Corr.</label>
-            </div>
-            <div>
-              <input type="checkbox" id="last-author-filter" checked>
-              <label for="last-author-filter">Last</label>
-            </div>
-          </div>
+        <div class="ahk-head">
+          <span class="ahk-title">Filters<span class="info-icon" data-tooltip="Co-first: Beginning authors marked with symbols (* † ‡ § # ✉).&#10;Corresponding: Non-beginning authors marked with symbols (* † ‡ § # ✉)."><svg focusable="false" width="14" height="14" viewBox="0 0 24 24" style="fill: currentColor"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg></span></span>
+          <button type="button" id="ahk-reset" class="ahk-reset" title="Reset filters">Reset</button>
         </div>
-        <div class="toggle-container">
-          <label for="visibility-toggle">Show only highlighted:</label>
-          <input type="checkbox" id="visibility-toggle">
+        <div class="ahk-roles">
+          <label class="ahk-check"><input type="checkbox" id="first-author-filter" checked><span>First</span></label>
+          <label class="ahk-check"><input type="checkbox" id="co-first-author-filter" checked><span>Co-First</span></label>
+          <label class="ahk-check"><input type="checkbox" id="second-author-filter" checked><span>Second</span></label>
+          <label class="ahk-check"><input type="checkbox" id="corresponding-author-filter" checked><span>Corr.</span></label>
+          <label class="ahk-check"><input type="checkbox" id="last-author-filter" checked><span>Last</span></label>
         </div>
-        <div class="toggle-container">
-          <label for="highlight-name-toggle">Highlight author name:</label>
-          <input type="checkbox" id="highlight-name-toggle">
-        </div>
-        <div class="time-filter-container">
-          <label>Year:</label>
-          <select id="start-year-input" class="year-input">
-            <option value="">Start</option>
-          </select>
-          <span>-</span>
-          <select id="end-year-input" class="year-input">
-            <option value="">End</option>
-          </select>
+        <div class="ahk-row"><span class="ahk-label">Show only highlighted</span><input type="checkbox" id="visibility-toggle" class="ahk-toggle"></div>
+        <div class="ahk-row"><span class="ahk-label">Highlight author name</span><input type="checkbox" id="highlight-name-toggle" class="ahk-toggle"></div>
+        <div class="ahk-row">
+          <span class="ahk-label">Year</span>
+          <span class="ahk-years">
+            <select id="start-year-input" class="year-input"><option value="">Start</option></select>
+            <span class="ahk-dash">–</span>
+            <select id="end-year-input" class="year-input"><option value="">End</option></select>
+          </span>
         </div>
       </div>
     `;
@@ -173,6 +150,34 @@ window.uiManager = (function () {
     const lastAuthorFilter = document.getElementById('last-author-filter');
     const startYearInput = document.getElementById('start-year-input');
     const endYearInput = document.getElementById('end-year-input');
+    const resetButton = document.getElementById('ahk-reset');
+
+    if (resetButton) {
+      resetButton.addEventListener('click', function () {
+        const roleIds = [
+          'first-author-filter', 'co-first-author-filter', 'second-author-filter',
+          'corresponding-author-filter', 'last-author-filter'
+        ];
+        roleIds.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el && !el.checked) {
+            el.checked = true;
+            el.dispatchEvent(new Event('change'));
+          }
+        });
+        ['start-year-input', 'end-year-input'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el && el.value !== '') {
+            el.value = '';
+            el.dispatchEvent(new Event('change'));
+          }
+        });
+        if (visibilityToggle && visibilityToggle.checked) {
+          visibilityToggle.checked = false;
+          visibilityToggle.dispatchEvent(new Event('change'));
+        }
+      });
+    }
 
     visibilityToggle.addEventListener('change', function () {
       const showOnlyHighlighted = this.checked;

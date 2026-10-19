@@ -1,76 +1,162 @@
 .first-author {
   background-color: #ffffd9 !important;
-  border-left: 4px solid #ffd700 !important;
 }
 
 .second-author {
   background-color: #fff0e6 !important;
-  border-left: 4px solid #ff8c00 !important;
 }
 
 .co-first-author {
   background-color: #e6ffe6 !important;
-  border-left: 4px solid #00cc00 !important;
 }
 
 .corresponding-author {
   background-color: #f3e5f5 !important;
-  border-left: 4px solid #9c27b0 !important;
 }
 
 .last-author {
   background-color: #e6f3ff !important;
-  border-right: 4px solid #4285f4 !important;
 }
 
 .first-author.last-author {
   background: linear-gradient(to right, #ffffd9 50%, #e6f3ff 50%) !important;
-  border-left: 4px solid #ffd700 !important;
-  border-right: 4px solid #4285f4 !important;
 }
 
 .second-author.last-author {
   background: linear-gradient(to right, #fff0e6 50%, #e6f3ff 50%) !important;
-  border-left: 4px solid #ff8c00 !important;
-  border-right: 4px solid #4285f4 !important;
 }
 
 .co-first-author.last-author {
   background: linear-gradient(to right, #e6ffe6 50%, #e6f3ff 50%) !important;
-  border-left: 4px solid #00cc00 !important;
-  border-right: 4px solid #4285f4 !important;
 }
 
 .corresponding-author.last-author {
   background: linear-gradient(to right, #f3e5f5 50%, #e6f3ff 50%) !important;
-  border-left: 4px solid #9c27b0 !important;
-  border-right: 4px solid #4285f4 !important;
 }
 
 .second-author.corresponding-author {
   background: linear-gradient(to right, #fff0e6 50%, #f3e5f5 50%) !important;
-  border-left: 4px solid #9c27b0 !important;
 }
 
 .first-author.corresponding-author {
   background: linear-gradient(to right, #ffffd9 50%, #f3e5f5 50%) !important;
-  border-left: 4px solid #9c27b0 !important;
 }
 
 .author-highlighter-controls {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid #eee;
-  border-radius: 0;
-  padding: 4px 0 10px;
+  background: #f6f8fa;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  padding: 0;
   margin-bottom: 14px;
   position: relative;
   z-index: 1000;
-  font-size: 14px;
-  line-height: 1.3;
+  font-size: 12px;
+  line-height: 1.45;
   box-sizing: border-box;
   max-width: 100%;
   overflow-x: hidden;
+}
+
+/* GitHub-style sidebar layout */
+.ahk-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid #d1d9e0;
+}
+
+.ahk-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  color: #1f2328;
+}
+
+.ahk-reset {
+  border: 0;
+  background: transparent;
+  padding: 2px 6px;
+  margin: -2px -6px 0 0;
+  border-radius: 6px;
+  font: 500 11px "Segoe UI", Arial, sans-serif;
+  color: #0969da;
+  cursor: pointer;
+}
+
+.ahk-reset:hover {
+  background: #ddf4ff;
+}
+
+.ahk-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #d1d9e0;
+}
+
+.ahk-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #1f2328;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ahk-check input,
+.ahk-toggle {
+  accent-color: #0969da;
+  margin: 0;
+}
+
+.ahk-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 12px;
+}
+
+.ahk-row + .ahk-row {
+  border-top: 1px solid #d8dee4;
+}
+
+.ahk-label {
+  color: #59636e;
+  font-size: 12px;
+}
+
+.ahk-years {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ahk-dash {
+  color: #59636e;
+}
+
+.author-highlighter-controls .year-input {
+  padding: 2px 6px;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  font-size: 12px;
+  height: 24px;
+  margin: 0;
+  background-color: #fff;
+  color: #1f2328;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.author-highlighter-controls .year-input:focus {
+  outline: none;
+  border-color: #0969da;
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
 }
 
 .author-highlighter-controls h3 {
