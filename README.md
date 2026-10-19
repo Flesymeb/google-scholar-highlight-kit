@@ -6,6 +6,9 @@ across Google Scholar, arXiv, GitHub and Hugging Face.
 
 ![Popup](docs/popup-preview.png)
 
+On a paper page the popup detects the paper automatically; the badges show
+where its preprint, code, and model live.
+
 ## Features
 
 - Toolbar popup searches Google Scholar and shows results in place; on an
@@ -20,6 +23,9 @@ across Google Scholar, arXiv, GitHub and Hugging Face.
 - Screenshot of the filtered list (copy or download)
 
 ![On-page panel](docs/demo-preview.png)
+
+Works on every Google Scholar language domain, including community mirrors
+that keep Scholar's DOM.
 
 ## Install
 

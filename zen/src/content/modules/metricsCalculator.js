@@ -102,6 +102,7 @@ window.metricsCalculator = (function () {
     } : null;
 
     return {
+      profileAuthoritative: !!profile,
       total: {
         count: stats.total.count,
         citations: (profile && profile.citations) || stats.total.citations,
@@ -126,6 +127,13 @@ window.metricsCalculator = (function () {
     const showMore = document.getElementById('gsc_bpf_more');
     const allLoaded = !showMore || showMore.offsetParent === null || showMore.disabled;
     const loadedNote = allLoaded ? '' : ' loaded';
+    // Without Scholar's sidebar stats (some mirrors) every total is just the
+    // loaded subset — label those rows too.
+    const noteFor = (authoritative) => (authoritative ? '' : loadedNote);
+    const papersNote = loadedNote;
+    const citNote = noteFor(metrics.profileAuthoritative);
+    const hNote = citNote;
+    const i10Note = citNote;
 
     let metricsComponent = document.getElementById('highlighted-metrics');
     if (!metricsComponent) {
@@ -253,25 +261,25 @@ window.metricsCalculator = (function () {
         <div class="metric-item">
           <span class="metric-label">Papers:</span>
           <span class="metric-value">
-            ${metrics.highlighted.count} <span class="metric-total">of ${metrics.total.count}${loadedNote}</span>
+            ${metrics.highlighted.count} <span class="metric-total">of ${metrics.total.count}${papersNote}</span>
           </span>
         </div>
         <div class="metric-item">
           <span class="metric-label">Citations:</span>
           <span class="metric-value">
-            ${metrics.highlighted.citations} <span class="metric-total">of ${metrics.total.citations}</span>
+            ${metrics.highlighted.citations} <span class="metric-total">of ${metrics.total.citations}${citNote}</span>
           </span>
         </div>
         <div class="metric-item">
           <span class="metric-label">h-index:</span>
           <span class="metric-value">
-            ${metrics.highlighted.hIndex} <span class="metric-total">of ${metrics.total.hIndex}</span>
+            ${metrics.highlighted.hIndex} <span class="metric-total">of ${metrics.total.hIndex}${hNote}</span>
           </span>
         </div>
         <div class="metric-item">
           <span class="metric-label">i10-index:</span>
           <span class="metric-value">
-            ${metrics.highlighted.i10index} <span class="metric-total">of ${metrics.total.i10index}</span>
+            ${metrics.highlighted.i10index} <span class="metric-total">of ${metrics.total.i10index}${i10Note}</span>
           </span>
         </div>
       </div>

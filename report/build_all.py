@@ -37,16 +37,16 @@ def zipdir(src, out):
                 z.write(full, os.path.relpath(full, src).replace('\\', '/'))
     return out
 
-chrome_zip = zipdir(chrome_dir, RELEASE + '/scholar-highlight-kit-1.0.0-chrome.zip')
+chrome_zip = zipdir(chrome_dir, RELEASE + '/scholar-highlight-kit-1.0.2-chrome.zip')
 
 # firefox/zen: unsigned package of the same source (web-ext build output may also exist)
-ff_zip = zipdir(SRC, RELEASE + '/scholar-highlight-kit-1.0.0-firefox-zen.zip')
-shutil.copyfile(ff_zip, RELEASE + '/scholar-highlight-kit-1.0.0-firefox-zen.xpi')
+ff_zip = zipdir(SRC, RELEASE + '/scholar-highlight-kit-1.0.2-firefox-zen.zip')
+shutil.copyfile(ff_zip, RELEASE + '/scholar-highlight-kit-1.0.2-firefox-zen.xpi')
 
 # copy the signed firefox/zen xpi if it exists (not the case right now)
-signed = DIST + '/google-scholar-highlight-kit-1.0.0-zen-SIGNED.xpi'
+signed = DIST + '/google-scholar-highlight-kit-1.0.2-zen-SIGNED.xpi'
 if os.path.exists(signed):
-    shutil.copyfile(signed, RELEASE + '/scholar-highlight-kit-1.0.0-zen-signed.xpi')
+    shutil.copyfile(signed, RELEASE + '/scholar-highlight-kit-1.0.2-zen-signed.xpi')
     print('signed xpi included')
 
 for f in sorted(os.listdir(RELEASE)):

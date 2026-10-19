@@ -139,8 +139,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const href = titleEl && titleEl.tagName === 'A' ? titleEl.getAttribute('href') : null;
+            const titleText = titleEl ? titleEl.textContent.trim() : '';
+            if (titleText.length < 3) return null; // skip noise rows entirely
             return {
-                title: titleEl ? titleEl.textContent.trim() : '(untitled)',
+                title: titleText,
                 href: href ? (href.indexOf('http') === 0 ? href : 'https://scholar.google.com' + href) : null,
                 meta: metaEl ? metaEl.textContent.trim().replace(/\s+/g, ' ') : '',
                 citedText: citedLink ? citedLink.textContent.trim().replace(/\s+/g, ' ') : '',
@@ -233,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderResults(text) {
-        const papers = parseResults(text).filter(function(p) { return p.title && p.title !== '(untitled)'; });
+        const papers = parseResults(text).filter(function(p) { return p && p.title; });
         clearResults();
 
         if (papers.length === 0) {
