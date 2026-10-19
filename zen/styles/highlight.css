@@ -261,43 +261,54 @@
 }
 
 .highlighted-metrics {
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 0;
+  font-size: 12px;
 }
 
 .highlighted-metrics h4 {
-  margin: 10px 0 6px 0;
-  color: #1a73e8;
-  font-size: 16px;
+  margin: 0;
+  color: #1f2328;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .metrics-grid {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0;
+  padding: 0 0 4px;
 }
 
 .metric-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 6px 12px;
+  border-top: 1px solid #eaeef2;
 }
 
 .metric-label {
-  font-weight: bold;
-  color: #5f6368;
+  font-weight: 400;
+  color: #59636e;
+  font-size: 12px;
 }
 
 .metric-value {
-  font-weight: bold;
-  color: #202124;
-  margin-right: 8px;
+  font-weight: 600;
+  color: #1f2328;
+  font-size: 12px;
+  margin: 0;
+}
+
+.metric-total {
+  font-size: 11px;
+  color: #8b949e;
+  font-weight: 400;
+  margin: 0 0 0 3px;
 }
 
 .metrics-divider {
-  border: none;
-  border-top: 1px solid #dadce0;
-  margin: 10px 0;
+  display: none;
 }
 
 /* Remove these styles if they exist */
@@ -646,12 +657,14 @@
   text-align: right;
 }
 
-/* Histogram Styles */
+/* Metrics section head matches the Filters head */
 .metrics-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 0;
+  padding: 8px 12px;
+  border-top: 1px solid #d1d9e0;
 }
 
 .metrics-header h4 {

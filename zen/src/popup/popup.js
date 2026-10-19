@@ -130,6 +130,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 ? arxivAnchor.getAttribute('href').replace('/pdf/', '/abs/')
                 : extractArxivHref(row);
 
+            // Scholar's meta line always carries the ID for arXiv-hosted papers,
+            // e.g. "… - arXiv preprint arXiv:2601.19832, 2026 - arxiv.org".
+            const metaText = metaEl ? metaEl.textContent : '';
+            const idMatch = metaText.match(/arXiv[:\s]*(\d{4}\.\d{4,5}(?:v\d+)?|[a-z.-]+\/\d{7}(?:v\d+)?)/i);
+            if (!arxivHref && idMatch) {
+                arxivHref = 'https://arxiv.org/abs/' + idMatch[1];
+            }
+
             const href = titleEl && titleEl.tagName === 'A' ? titleEl.getAttribute('href') : null;
             return {
                 title: titleEl ? titleEl.textContent.trim() : '(untitled)',
@@ -282,10 +290,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 const host = url.hostname;
                 const title = tab.title;
 
-                if (host === 'arxiv.org' && url.pathname.indexOf('/abs/') === 0) {
-                    const cleaned = title.replace(/^\[[^\]]*\]\s*/, '').replace(/\s*[-–|]\s*arXiv.*$/i, '').trim();
-                    callback(cleaned.length > 8 ? cleaned : null, tab.url);
-                    return;
+                if (host === 'arxiv.org' || host === 'www.arxiv.org') {
+                    const pathMatch = url.pathname.match(/^\/(?:abs|pdf|html)\/([^/]+)/);
+                    if (pathMatch) {
+                        const cleaned = title.replace(/^\[[^\]]*\]\s*/, '').replace(/\s*[-–|]\s*arXiv.*$/i, '').trim();
+                        const absUrl = 'https://arxiv.org/abs/' + pathMatch[1].replace(/\.pdf$/i, '');
+                        callback(cleaned.length > 8 ? cleaned : null, absUrl);
+                        return;
+                    }
                 }
                 if (host.indexOf('scholar.google.') === 0 &&
                     (url.searchParams.get('view_op') === 'view_citation' || url.pathname.indexOf('/citations') === 0)) {
