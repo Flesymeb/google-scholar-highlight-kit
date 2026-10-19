@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Google Scholar — preview mock</title>
+<link rel="stylesheet" href="../../zen/styles/highlight.css">
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; background: #fff; color: #222; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 20px 28px; }
+  .gs-logo { color: #3877db; font-size: 26px; font-weight: 600; margin: 4px 0 18px; }
+  .gs-logo span { color: #f4b400; }
+  #gsc_prf_w { border: 1px solid #d5d5d5; padding: 16px 20px; margin-bottom: 16px; display: flex; gap: 18px; }
+  .avatar { width: 80px; height: 80px; background: #e8eaed; border-radius: 4px; flex: none; }
+  .prf-name { font-size: 22px; color: #3877db; margin: 2px 0 6px; }
+  .prf-aff { color: #444; font-size: 13px; margin: 2px 0; }
+  .prf-email { color: #999; font-size: 12px; }
+  .gsc_a_t { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .gsc_a_t th { text-align: left; font-weight: normal; color: #777; font-size: 12px; border-bottom: 1px solid #ddd; padding: 6px 8px; }
+  .gsc_a_t th.right, .gsc_a_t td.right { text-align: right; }
+  .gsc_a_tr { border-bottom: 1px solid #eee; }
+  .gsc_a_tr td { padding: 9px 8px; vertical-align: top; font-size: 13px; }
+  .gsc_a_at { color: #1155cc; font-weight: 500; text-decoration: none; font-size: 15px; }
+  .gs_gray { color: #777; font-size: 12px; margin-top: 3px; }
+  .gsc_a_ac, .gsc_a_hc { font-size: 13px; color: #222; white-space: nowrap; }
+  .gsc_a_hc { color: #999; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="gs-logo">Scholar<span> Metrics</span></div>
+
+  <div id="gsc_prf_w">
+    <div class="avatar"></div>
+    <div>
+      <div class="prf-name">Geoffrey Hinton</div>
+      <div class="prf-aff">Emeritus Prof. Computer Science, University of Toronto</div>
+      <div class="prf-aff">Verified email at cs.toronto.edu</div>
+      <div class="prf-email">Interests: Machine Learning, Neural Networks, Deep Learning</div>
+    </div>
+  </div>
+
+  <div id="author-highlighter-controls" class="author-highlighter-controls">
+    <h3><span class="title-container">Author Highlighter<span class="info-icon" data-tooltip="Co-first: Beginning authors marked with symbols (* † ‡ § # ✉).&#10;Corresponding: Non-beginning authors marked with symbols (* † ‡ § # ✉)."><svg focusable="false" width="16" height="16" viewBox="0 0 24 24" style="fill: currentColor"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg></span></span></h3>
+    <div class="filter-container">
+      <label>Highlight:</label>
+      <div class="filter-options">
+        <div><input type="checkbox" id="first-author-filter" checked><label for="first-author-filter">First</label></div>
+        <div><input type="checkbox" id="co-first-author-filter" checked><label for="co-first-author-filter">Co-First</label></div>
+        <div><input type="checkbox" id="second-author-filter" checked><label for="second-author-filter">Second</label></div>
+        <div><input type="checkbox" id="corresponding-author-filter" checked><label for="corresponding-author-filter">Corr.</label></div>
+        <div><input type="checkbox" id="last-author-filter" checked><label for="last-author-filter">Last</label></div>
+      </div>
+    </div>
+    <div class="toggle-container">
+      <label for="visibility-toggle">Show only highlighted:</label>
+      <input type="checkbox" id="visibility-toggle">
+    </div>
+    <div class="toggle-container">
+      <label for="highlight-name-toggle">Highlight author name:</label>
+      <input type="checkbox" id="highlight-name-toggle" checked>
+    </div>
+    <div class="time-filter-container">
+      <label>Year:</label>
+      <select id="start-year-input" class="year-input"><option value="">Start</option><option>2015</option><option>2012</option><option>2006</option></select>
+      <span>-</span>
+      <select id="end-year-input" class="year-input"><option value="">End</option><option>2026</option><option>2018</option></select>
+    </div>
+  </div>
+
+  <table class="gsc_a_t">
+    <tr><th>Title</th><th class="right">Cited by</th><th class="right">Year</th></tr>
+    <tr class="gsc_a_tr first-author">
+      <td>
+        <a class="gsc_a_at" href="#">Deep learning</a>
+        <div class="gs_gray"><span class="highlighted-author-name">Y LeCun</span>, Y Bengio, <span class="highlighted-author-name">G Hinton</span></div>
+        <div class="gs_gray">Nature 521 (7553), 436-444, 2015</div>
+      </td>
+      <td class="right gsc_a_ac">123456</td><td class="right gsc_a_hc">2015</td>
+    </tr>
+    <tr class="gsc_a_tr last-author">
+      <td>
+        <a class="gsc_a_at" href="#">ImageNet classification with deep convolutional neural networks</a>
+        <div class="gs_gray">A Krizhevsky, I Sutskever, <span class="highlighted-author-name">G Hinton</span></div>
+        <div class="gs_gray">Communications of the ACM 60 (6), 84-90, 2017</div>
+      </td>
+      <td class="right gsc_a_ac">178902</td><td class="right gsc_a_hc">2017</td>
+    </tr>
+    <tr class="gsc_a_tr corresponding-author">
+      <td>
+        <a class="gsc_a_at" href="#">Layer normalization</a>
+        <div class="gs_gray">JL Ba, JR Kiros, <span class="highlighted-author-name">G Hinton</span>*</div>
+        <div class="gs_gray">arXiv preprint arXiv:1607.06450</div>
+      </td>
+      <td class="right gsc_a_ac">45678</td><td class="right gsc_a_hc">2016</td>
+    </tr>
+    <tr class="gsc_a_tr first-author last-author">
+      <td>
+        <a class="gsc_a_at" href="#">Boltzmann machines</a>
+        <div class="gs_gray"><span class="highlighted-author-name">G Hinton</span></div>
+        <div class="gs_gray">Encyclopedia of machine learning and data mining 1, 1-7</div>
+      </td>
+      <td class="right gsc_a_ac">3456</td><td class="right gsc_a_hc">2014</td>
+    </tr>
+    <tr class="gsc_a_tr co-first-author">
+      <td>
+        <a class="gsc_a_at" href="#">Using free energies to represent Q-values in a multiagent task</a>
+        <div class="gs_gray"><span class="highlighted-author-name">G Hinton</span>†, B Sallans</div>
+        <div class="gs_gray">Advances in Neural Information Processing Systems 13</div>
+      </td>
+      <td class="right gsc_a_ac">234</td><td class="right gsc_a_hc">2000</td>
+    </tr>
+    <tr class="gsc_a_tr">
+      <td>
+        <a class="gsc_a_at" href="#">Proceedings of the Ninth Annual Cognitive Science Society Conference</a>
+        <div class="gs_gray">DC Plaut, <span class="highlighted-author-name">G Hinton</span></div>
+        <div class="gs_gray">Cognitive Science Society</div>
+      </td>
+      <td class="right gsc_a_ac">123</td><td class="right gsc_a_hc">1987</td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

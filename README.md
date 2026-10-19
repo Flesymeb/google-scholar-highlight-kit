@@ -15,10 +15,19 @@ profile pages, with metrics, filters, and screenshots. Built for Zen / Firefox.
 
 ## Demo
 
-Try it on a dense publication list, for example
-[Geoffrey Hinton](https://scholar.google.com/citations?user=JicYPdAAAAAJ&hl=en)
-or [Yann LeCun](https://scholar.google.com/citations?user=WLN3QrAAAAAJ&hl=en) —
-first, co-first, corresponding, and last-author papers light up instantly.
+On-page highlight panel (UI preview):
+
+![On-page highlight panel](docs/demo-preview.png)
+
+Papers light up by role — first, co-first, corresponding, and last author —
+with the author's name marked in the author list. The filter panel blends
+into the page. Try it on a dense profile such as
+[Geoffrey Hinton](https://scholar.google.com/citations?user=JicYPdAAAAAJ&hl=en)'s
+or [Yann LeCun](https://scholar.google.com/citations?user=WLN3QrAAAAAJ&hl=en)'s.
+
+The toolbar popup stays minimal:
+
+![Toolbar popup](docs/popup-preview.png)
 
 ## Install
 
