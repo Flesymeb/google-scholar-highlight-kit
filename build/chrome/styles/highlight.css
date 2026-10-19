@@ -1,0 +1,875 @@
+.first-author {
+  background-color: #ffffd9 !important;
+}
+
+.second-author {
+  background-color: #fff0e6 !important;
+}
+
+.co-first-author {
+  background-color: #e6ffe6 !important;
+}
+
+.corresponding-author {
+  background-color: #f3e5f5 !important;
+}
+
+.last-author {
+  background-color: #e6f3ff !important;
+}
+
+.first-author.last-author {
+  background: linear-gradient(to right, #ffffd9 50%, #e6f3ff 50%) !important;
+}
+
+.second-author.last-author {
+  background: linear-gradient(to right, #fff0e6 50%, #e6f3ff 50%) !important;
+}
+
+.co-first-author.last-author {
+  background: linear-gradient(to right, #e6ffe6 50%, #e6f3ff 50%) !important;
+}
+
+.corresponding-author.last-author {
+  background: linear-gradient(to right, #f3e5f5 50%, #e6f3ff 50%) !important;
+}
+
+.second-author.corresponding-author {
+  background: linear-gradient(to right, #fff0e6 50%, #f3e5f5 50%) !important;
+}
+
+.first-author.corresponding-author {
+  background: linear-gradient(to right, #ffffd9 50%, #f3e5f5 50%) !important;
+}
+
+.author-highlighter-controls {
+  background: #fff;
+  border: 1px solid #d1d9e0;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1000;
+  font-size: 12px;
+  line-height: 1.45;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* Tooltip must be able to escape the panel box */
+.author-highlighter-controls .info-icon::before {
+  z-index: 10001;
+}
+
+/* GitHub-style sidebar layout */
+.ahk-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid #d1d9e0;
+}
+
+.ahk-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  color: #1f2328;
+}
+
+.ahk-reset {
+  border: 0;
+  background: transparent;
+  padding: 2px 6px;
+  margin: -2px -6px 0 0;
+  border-radius: 6px;
+  font: 500 11px "Segoe UI", Arial, sans-serif;
+  color: #0969da;
+  cursor: pointer;
+}
+
+.ahk-reset:hover {
+  background: #ddf4ff;
+}
+
+.ahk-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #d1d9e0;
+}
+
+.ahk-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #1f2328;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Keep First / Co-First / Second on the first line */
+.ahk-check:nth-child(-n + 3) {
+  margin-right: 4px;
+}
+
+.ahk-roles::after {
+  content: "";
+  flex-basis: 100%;
+  height: 0;
+  order: 3;
+}
+
+.ahk-check:nth-child(4),
+.ahk-check:nth-child(5) {
+  order: 4;
+}
+
+.ahk-check input,
+.ahk-toggle {
+  accent-color: #0969da;
+  margin: 0;
+}
+
+.ahk-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 12px;
+}
+
+.ahk-row + .ahk-row {
+  border-top: 1px solid #d8dee4;
+}
+
+.ahk-label {
+  color: #59636e;
+  font-size: 12px;
+}
+
+.ahk-years {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ahk-dash {
+  color: #59636e;
+}
+
+.author-highlighter-controls .year-input {
+  padding: 2px 6px;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  font-size: 12px;
+  height: 24px;
+  margin: 0;
+  background-color: #fff;
+  color: #1f2328;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.author-highlighter-controls .year-input:focus {
+  outline: none;
+  border-color: #0969da;
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
+}
+
+.author-highlighter-controls h3 {
+  margin: 0 0 6px 0;
+  width: 100%;
+  box-sizing: border-box;
+  color: #1a73e8;
+  font-size: 16px;
+  /* Decreased from 18px */
+  display: flex;
+  /* Enable flex container */
+  align-items: center;
+  /* Center items vertically */
+  justify-content: space-between;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-container,
+.filter-container {
+  margin-top: 6px;
+  /* Slightly reduced margin */
+}
+
+.toggle-container label,
+.filter-container>label {
+  display: inline-block;
+  margin-right: 6px;
+  font-weight: bold;
+  font-size: 13px;
+  /* Added to make labels slightly smaller */
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  align-items: center;
+  margin-left: 6px;
+  margin-right: 8px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.filter-options div {
+  display: flex;
+  align-items: center;
+}
+
+.filter-options label {
+  margin-left: 3px;
+  font-size: 13px;
+  white-space: nowrap;
+  /* Prevent text wrapping */
+}
+
+#visibility-toggle,
+.filter-options input[type="checkbox"] {
+  transform: scale(1.1);
+  /* Slightly reduced scale */
+  margin-right: 3px;
+}
+
+/* Ensure the injected UI doesn't affect other elements */
+#gsc_prf_w {
+  position: relative;
+}
+
+#gsc_prf_w>div:first-child {
+  margin-bottom: 16px;
+}
+
+.highlighted-cited-by {
+  background: transparent;
+  border: none;
+  border-top: 1px solid #eee;
+  border-radius: 0;
+  padding: 10px 0 4px;
+  margin-top: 12px;
+  font-size: 14px;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.highlighted-cited-by h4 {
+  margin: 0 0 6px 0;
+  color: #1a73e8;
+  font-size: 16px;
+}
+
+.highlighted-cited-by p {
+  margin: 4px 0;
+}
+
+.highlighted-metrics {
+  margin-top: 0;
+  font-size: 12px;
+}
+
+.highlighted-metrics h4 {
+  margin: 0;
+  color: #1f2328;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.metrics-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0 0 4px;
+}
+
+.metric-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  border-top: 1px solid #eaeef2;
+}
+
+.metric-label {
+  font-weight: 400;
+  color: #59636e;
+  font-size: 12px;
+}
+
+.metric-value {
+  font-weight: 600;
+  color: #1f2328;
+  font-size: 12px;
+  margin: 0;
+}
+
+.metric-total {
+  font-size: 11px;
+  color: #8b949e;
+  font-weight: 400;
+  margin: 0 0 0 3px;
+}
+
+.metrics-divider {
+  display: none;
+}
+
+/* Remove these styles if they exist */
+.highlighted-metrics {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+.toggle-container {
+  margin-top: 10px;
+}
+
+/* Highlighted author name within paper author list */
+.highlighted-author-name {
+  background-color: #ffe066 !important;
+  color: #4d3800 !important;
+  padding: 1px 5px;
+  border-radius: 5px;
+  font-weight: bold !important;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Info icon and tooltip styles for filter panel */
+.info-icon {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 13px;
+  color: #4285f4;
+  cursor: help;
+  position: relative;
+  vertical-align: text-bottom;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.info-icon:hover {
+  color: #1a73e8;
+}
+
+.info-icon::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: normal;
+  line-height:1.5;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 10001;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  width: 300px;
+  white-space: pre-wrap;
+}
+
+/* If the icon sits in the left half of the screen, flip the tooltip to the right. */
+@media (max-width: 989px) {
+  .author-highlighter-controls .info-icon::before {
+    right: auto;
+    left: calc(100% + 8px);
+  }
+}
+
+.info-icon:hover::before {
+  opacity: 1;
+}
+
+.time-filter-container {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.time-filter-container label {
+  margin-right: 6px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.year-input {
+  padding: 2px 6px;
+  border: 1px solid #dadce0;
+  border-radius: 7px;
+  font-size: 13px;
+  margin: 0 4px;
+  height: 24px;
+  background-color: white;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.year-input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
+}
+
+.metric-total {
+  font-size: 0.9em;
+  color: #5f6368;
+  font-weight: normal;
+  margin-left: 4px;
+}
+
+/* Share Buttons */
+.share-container {
+  margin-top: 12px;
+}
+
+.share-buttons-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.share-twitter {
+  background-color: #000;
+  color: #fff;
+}
+
+.share-twitter:hover {
+  background-color: #333;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.share-copy {
+  background-color: #fff;
+  color: #5f6368;
+  border: 1px solid #dadce0;
+}
+
+.share-copy:hover {
+  background-color: #f8f9fa;
+  color: #202124;
+  border-color: #dadce0;
+}
+
+.share-feedback {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #1e8e3e;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  height: 15px;
+  /* prevent layout shift */
+}
+
+.share-feedback.visible {
+  opacity: 1;
+}
+
+/* Share Icon in Header */
+.share-icon-btn {
+  margin-left: auto;
+  margin-right: 8px;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  color: #4285f4;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.share-icon-btn:hover {
+  opacity: 1;
+  color: #1a73e8;
+}
+
+.share-icon-btn:focus-visible {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.share-icon-btn:disabled {
+  cursor: wait;
+  opacity: 0.4;
+}
+
+/* Modal Styles */
+.share-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(2px);
+}
+
+.share-modal-content {
+  background: white;
+  padding: 22px;
+  border-radius: 16px;
+  max-width: 90%;
+  max-height: 90%;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  display: flex;
+  flex-direction: column;
+}
+
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.share-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #202124;
+}
+
+.close-modal {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #5f6368;
+  line-height: 1;
+  border: 0;
+  background: transparent;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.close-modal:hover {
+  color: #202124;
+}
+
+.share-modal-body {
+  overflow: auto;
+  border: 1px solid #dadce0;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.screenshot-preview {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.share-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.share-attribution-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  color: #5f6368;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.share-attribution-option input {
+  accent-color: #1a73e8;
+}
+
+.modal-btn {
+  padding: 8px 18px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.modal-btn:hover {
+  transform: translateY(-1px);
+}
+
+.modal-btn:active {
+  transform: translateY(0);
+}
+
+.modal-btn.primary {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.modal-btn.primary:hover {
+  background-color: #1558b0;
+}
+
+.modal-btn.secondary {
+  background-color: white;
+  color: #1a73e8;
+  border-color: #dadce0;
+}
+
+.modal-btn.secondary:hover {
+  background-color: #f1f3f4;
+}
+
+.modal-btn:focus-visible,
+.close-modal:focus-visible {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.share-modal-status {
+  min-height: 18px;
+  padding: 0 20px 14px;
+  color: #5f6368;
+  font-size: 12px;
+  text-align: right;
+}
+
+/* Metrics section head matches the Filters head */
+.metrics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+  padding: 8px 12px;
+  border-top: 1px solid #d1d9e0;
+}
+
+.metrics-header h4 {
+  margin: 0;
+  /* Override default margin */
+  display: flex;
+  align-items: center;
+  flex: 1;
+  /* Allow taking full width */
+}
+
+/* Emoji Toggle Button */
+.histogram-emoji-btn {
+  /* font-size: 16px; Removed as we use SVG size */
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 8px;
+  /* Push to the right */
+  color: #1a73e8;
+  /* Blue color */
+  opacity: 0.7;
+  /* Default opacity */
+  transition: color 0.2s, opacity 0.2s;
+  user-select: none;
+  display: flex;
+  /* Fix alignment of SVG */
+  align-items: center;
+}
+
+.histogram-emoji-btn:hover {
+  color: #1558b0;
+  /* Darker blue on hover */
+  opacity: 1;
+  /* Full opacity on hover */
+}
+
+.histogram-wrapper {
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 8px;
+  /* Make space for y-axis label */
+  border-top: 1px dotted #dadce0;
+}
+
+.histogram {
+  display: flex;
+  align-items: flex-end;
+  height: 60px;
+  /* Restrained height */
+  gap: 2px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #dadce0;
+}
+
+.histogram-bar-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  position: relative;
+  /* For tooltip positioning */
+}
+
+.histogram-bar {
+  display: flex !important;
+  flex-direction: column;
+  background-color: transparent;
+  /* Container is transparent */
+  border-radius: 1px 1px 0 0;
+  min-width: 2px;
+  width: 100%;
+  overflow: hidden;
+  /* Ensure rounded corners clip segments */
+}
+
+.histogram-segment {
+  width: 100%;
+  transition: background-color 0.1s;
+}
+
+.histogram-segment.normal {
+  background-color: #dadce0;
+  /* Light Gray (Google Grey 300) */
+}
+
+.histogram-segment.highlighted {
+  background-color: #bdc1c6;
+  /* Lighter Gray (Google Grey 400) */
+}
+
+.histogram-bar-container:hover .histogram-segment.normal {
+  background-color: #bdc1c6;
+  /* Darker gray on hover */
+}
+
+.histogram-bar-container:hover .histogram-segment.highlighted {
+  background-color: #9aa0a6;
+  /* Darker gray on hover */
+}
+
+/* Value Label on Hover */
+.histogram-bar-container::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 4px 8px;
+  /* Slightly larger padding */
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+  z-index: 10;
+  margin-bottom: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.histogram-bar-container:hover::after {
+  opacity: 1;
+}
+
+
+/* Axis Styling */
+.histogram-axis {
+  position: relative;
+  height: 14px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.histogram-axis span {
+  position: absolute;
+  transform: translateX(-50%);
+  /* Center the text on the position */
+  font-size: 10px;
+  color: #5f6368;
+  white-space: nowrap;
+}
+
+.histogram {
+  position: relative;
+  /* Ensure relative positioning for absolute children */
+}
+
+.histogram-y-axis-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed #dadce0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.histogram-y-axis-label {
+  position: absolute;
+  left: -12px;
+  /* Position to the left of the chart */
+  transform: translateY(50%);
+  font-size: 10px;
+  color: #5f6368;
+  line-height: 1;
+}
+
+.histogram-year-label {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #5f6368;
+  white-space: nowrap;
+}

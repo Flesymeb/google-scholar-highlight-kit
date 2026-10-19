@@ -376,7 +376,7 @@
 .info-icon::before {
   content: attr(data-tooltip);
   position: absolute;
-  left: calc(100% + 8px);
+  right: calc(100% + 8px);
   top: 50%;
   transform: translateY(-50%);
   background-color: #333;
@@ -385,7 +385,7 @@
   border-radius: 6px;
   font-size: 13px;
   font-weight: normal;
-  line-height: 1.5;
+  line-height:1.5;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -394,6 +394,14 @@
   text-align: left;
   width: 300px;
   white-space: pre-wrap;
+}
+
+/* If the icon sits in the left half of the screen, flip the tooltip to the right. */
+@media (max-width: 989px) {
+  .author-highlighter-controls .info-icon::before {
+    right: auto;
+    left: calc(100% + 8px);
+  }
 }
 
 .info-icon:hover::before {

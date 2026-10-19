@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderResults(text) {
-        const papers = parseResults(text);
+        const papers = parseResults(text).filter(function(p) { return p.title && p.title !== '(untitled)'; });
         clearResults();
 
         if (papers.length === 0) {
@@ -299,10 +299,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         return;
                     }
                 }
-                if (host.indexOf('scholar.google.') === 0 &&
-                    (url.searchParams.get('view_op') === 'view_citation' || url.pathname.indexOf('/citations') === 0)) {
+                // Only single-paper views count. Profile pages (citations?user=…)
+                // are where the extension itself works; auto-searching a person's
+                // name there is noise.
+                if (host.indexOf('scholar.google.') === 0 && url.searchParams.get('view_op') === 'view_citation') {
                     const cleaned = title.replace(/\s*[-–|]\s*Google Scholar.*$/i, '').trim();
-                    if (cleaned.length > 8 && !/^citations$/i.test(cleaned)) { callback(cleaned, null); return; }
+                    if (cleaned.length > 8) { callback(cleaned, null); return; }
                 }
                 callback(null, null);
             });

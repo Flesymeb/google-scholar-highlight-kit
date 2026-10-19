@@ -1,49 +1,43 @@
 # Google Scholar Highlight Kit
 
-A browser extension that highlights papers by authorship role on Google Scholar
-profile pages, with metrics, filters, and screenshots. Built for Zen / Firefox.
+A browser extension for Google Scholar: highlights papers by authorship role
+on profile pages, and adds a toolbar search that looks up the current paper
+across Google Scholar, arXiv, GitHub and Hugging Face.
+
+![Popup](docs/popup-preview.png)
 
 ## Features
 
+- Toolbar popup searches Google Scholar and shows results in place; on an
+  arXiv or Scholar paper page it detects the paper automatically and shows a
+  paper card with Cite, BibTeX, and Related-article links
+- Availability badges for the detected paper: arXiv preprint, GitHub code,
+  Hugging Face model — gray when absent, colored when found, click to open
 - Highlights first, co-first, second, corresponding, and last-author papers
-- Authorship metrics for the highlighted subset (citations, h-index, i10)
-- Filter by role and year; optionally hide non-highlighted papers
-- Author name highlighting
-- Screenshot of results (copy or download)
-- Last-author detection via public metadata (OpenAlex, Crossref, DataCite,
-  arXiv) with local caching and rate limiting
+  on Scholar profile pages, with author-name marking
+- Metrics for the highlighted subset (papers, citations, h-index, i10) and
+  filters by role and year
+- Screenshot of the filtered list (copy or download)
 
-## Demo
-
-On-page highlight panel (UI preview):
-
-![On-page highlight panel](docs/demo-preview.png)
-
-Papers light up by role — first, co-first, corresponding, and last author —
-with the author's name marked in the author list. The filter panel blends
-into the page. Try it on a dense profile such as
-[Geoffrey Hinton](https://scholar.google.com/citations?user=JicYPdAAAAAJ&hl=en)'s
-or [Yann LeCun](https://scholar.google.com/citations?user=WLN3QrAAAAAJ&hl=en)'s.
-
-The toolbar popup stays minimal:
-
-![Toolbar popup](docs/popup-preview.png)
+![On-page panel](docs/demo-preview.png)
 
 ## Install
 
-**Zen / Firefox (temporary, until restart):** open
-`about:debugging#/runtime/this-firefox`, click *Load Temporary Add-on*, and
-pick the `.xpi` file.
+**Chrome / Chromium:** download `scholar-highlight-kit-<version>-chrome.zip`
+from [Releases](../../releases), unzip, then open
+`chrome://extensions`, enable *Developer mode*, click *Load unpacked*, and
+select the unzipped folder.
 
-**Permanent:** Firefox-based browsers require a signed package. With an
-[AMO](https://addons.mozilla.org) API key:
+**Zen / Firefox:** download `scholar-highlight-kit-<version>-firefox-zen.xpi`
+from [Releases](../../releases). For a permanent install the package must be
+signed; with an [AMO](https://addons.mozilla.org) API key:
 
 ```sh
 npx web-ext sign --source-dir zen --api-key <issuer> --api-secret <secret> --channel unlisted
 ```
 
-Then install the signed `.xpi` via `about:addons` → gear menu →
-*Install Add-on From File*.
+Until then, load it temporarily via `about:debugging#/runtime/this-firefox`
+→ *Load Temporary Add-on*.
 
 ## Build
 
@@ -51,6 +45,9 @@ Then install the signed `.xpi` via `about:addons` → gear menu →
 npx web-ext lint --source-dir zen
 npx web-ext build --source-dir zen
 ```
+
+The Chrome build is the same source with `background.service_worker`
+instead of an event page; see `report/build_all.py`.
 
 ## Reference
 
