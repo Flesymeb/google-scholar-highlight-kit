@@ -77,6 +77,10 @@ body {
   color: #e8a30d;
 }
 
+.icon-btn.active.btn-arxiv {
+  color: #b31b1b;
+}
+
 .icon-btn.active:hover {
   background: #f0f2f4;
 }

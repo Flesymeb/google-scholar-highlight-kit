@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Google Scholar Highlight Kit",
-  "version": "1.2.1",
-  "description": "Search Google Scholar, GitHub and Hugging Face from the toolbar; highlight authorship roles on Scholar profiles.",
+  "version": "1.2.2",
+  "description": "Search Google Scholar, arXiv, GitHub and Hugging Face from the toolbar; highlight authorship roles on Scholar profiles.",
   "permissions": [
     "storage"
   ],

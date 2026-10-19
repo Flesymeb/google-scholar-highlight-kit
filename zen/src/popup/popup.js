@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const scholarButton = document.getElementById('scholar-button');
     const githubSearchButton = document.getElementById('github-search-button');
     const hfSearchButton = document.getElementById('hf-search-button');
+    const arxivSearchButton = document.getElementById('arxiv-search-button');
     const githubButton = document.getElementById('github-button');
     const resultsBox = document.getElementById('results');
 
@@ -112,9 +113,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (query) openTab('https://huggingface.co/search?q=' + encodeURIComponent(query));
     });
 
+    arxivSearchButton.addEventListener('click', function() {
+        const query = input.value.trim();
+        if (query) openTab('https://arxiv.org/search/?query=' + encodeURIComponent(query) + '&searchtype=all');
+    });
+
     function updateEngineState() {
         const hasQuery = input.value.trim().length > 0;
-        [githubSearchButton, hfSearchButton].forEach(function(button) {
+        [githubSearchButton, hfSearchButton, arxivSearchButton].forEach(function(button) {
             button.classList.toggle('active', hasQuery);
             button.disabled = !hasQuery;
         });
