@@ -87,12 +87,26 @@ window.metricsCalculator = (function () {
     const totalIndices = calcIndices(stats.total.citationCounts);
     const highlightedIndices = calcIndices(stats.highlighted.citationCounts);
 
+    // Scholar's own sidebar stats are profile-wide (all loaded pages and
+    // beyond) — prefer them as the "of N" denominators over per-page sums.
+    const sidebarCells = document.querySelectorAll('#gsc_rsb_s .gsc_rsb_std');
+    const parseCell = (el) => {
+      const n = parseInt((el.textContent || '').replace(/[,\s]/g, ''), 10);
+      return isNaN(n) ? null : n;
+    };
+    // Cells come in All/Since pairs: citations, h-index, i10-index.
+    const profile = sidebarCells.length >= 3 ? {
+      citations: parseCell(sidebarCells[0]),
+      hIndex: parseCell(sidebarCells[2]),
+      i10index: parseCell(sidebarCells[4])
+    } : null;
+
     return {
       total: {
         count: stats.total.count,
-        citations: stats.total.citations,
-        hIndex: totalIndices.hIndex,
-        i10index: totalIndices.i10index,
+        citations: (profile && profile.citations) || stats.total.citations,
+        hIndex: (profile && profile.hIndex) || totalIndices.hIndex,
+        i10index: (profile && profile.i10index) || totalIndices.i10index,
         years: stats.total.years
       },
       highlighted: {
@@ -107,6 +121,11 @@ window.metricsCalculator = (function () {
 
   function displayHighlightedMetrics() {
     const metrics = calculateMetrics();
+    // When "Show more" remains, loaded totals are a subset of the profile;
+    // say so instead of implying the numbers cover everything.
+    const showMore = document.getElementById('gsc_bpf_more');
+    const allLoaded = !showMore || showMore.offsetParent === null || showMore.disabled;
+    const loadedNote = allLoaded ? '' : ' loaded';
 
     let metricsComponent = document.getElementById('highlighted-metrics');
     if (!metricsComponent) {
@@ -234,7 +253,7 @@ window.metricsCalculator = (function () {
         <div class="metric-item">
           <span class="metric-label">Papers:</span>
           <span class="metric-value">
-            ${metrics.highlighted.count} <span class="metric-total">of ${metrics.total.count}</span>
+            ${metrics.highlighted.count} <span class="metric-total">of ${metrics.total.count}${loadedNote}</span>
           </span>
         </div>
         <div class="metric-item">
