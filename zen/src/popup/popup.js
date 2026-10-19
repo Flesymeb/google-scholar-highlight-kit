@@ -17,57 +17,140 @@ document.addEventListener('DOMContentLoaded', function() {
         return 'https://scholar.google.com/scholar?q=' + encodeURIComponent(query);
     }
 
-    function setStatus(text) {
+    function clearResults() {
         while (resultsBox.firstChild) resultsBox.removeChild(resultsBox.firstChild);
+    }
+
+    function setStatus(text) {
+        clearResults();
         const row = document.createElement('div');
         row.className = 'results-status';
         row.textContent = text;
         resultsBox.appendChild(row);
     }
 
-    function renderResults(text) {
+    function makeActionButton(label, url) {
+        const btn = document.createElement('button');
+        btn.className = 'paper-action';
+        btn.type = 'button';
+        btn.textContent = label;
+        btn.addEventListener('click', function() {
+            if (url) openTab(url);
+        });
+        return btn;
+    }
+
+    function parseResults(text) {
         const doc = new DOMParser().parseFromString(text, 'text/html');
-        const blocks = Array.from(doc.querySelectorAll('.gs_r .gs_ri')).slice(0, 6);
+        return Array.from(doc.querySelectorAll('.gs_r .gs_ri')).slice(0, 6).map(function(block) {
+            const titleEl = block.querySelector('.gs_rt a') || block.querySelector('.gs_rt');
+            const metaEl = block.querySelector('.gs_a');
+            const links = Array.from(block.querySelectorAll('.gs_fl a'));
+            const citedLink = links.find(function(a) { return /Cited by/i.test(a.textContent); });
+            const relatedLink = links.find(function(a) { return (a.getAttribute('href') || '').indexOf('related:') !== -1; });
 
-        while (resultsBox.firstChild) resultsBox.removeChild(resultsBox.firstChild);
+            let clusterId = null;
+            if (citedLink) {
+                const match = (citedLink.getAttribute('href') || '').match(/cites=([0-9]+)/);
+                if (match) clusterId = match[1];
+            }
 
-        if (blocks.length === 0) {
+            const href = titleEl && titleEl.tagName === 'A' ? titleEl.getAttribute('href') : null;
+            return {
+                title: titleEl ? titleEl.textContent.trim() : '(untitled)',
+                href: href ? (href.indexOf('http') === 0 ? href : 'https://scholar.google.com' + href) : null,
+                meta: metaEl ? metaEl.textContent.trim().replace(/\s+/g, ' ') : '',
+                citedText: citedLink ? citedLink.textContent.trim().replace(/\s+/g, ' ') : '',
+                citedHref: citedLink ? citedLink.getAttribute('href') : null,
+                relatedHref: relatedLink ? relatedLink.getAttribute('href') : null,
+                clusterId: clusterId
+            };
+        });
+    }
+
+    function absoluteScholar(href) {
+        if (!href) return null;
+        return href.indexOf('http') === 0 ? href : 'https://scholar.google.com' + href;
+    }
+
+    function renderPaperCard(paper) {
+        const card = document.createElement('div');
+        card.className = 'paper-card';
+
+        const label = document.createElement('div');
+        label.className = 'paper-card-label';
+        label.textContent = 'This paper';
+
+        const title = document.createElement('a');
+        title.className = 'result-title paper-card-title';
+        title.textContent = paper.title;
+        title.addEventListener('click', function() {
+            if (paper.href) openTab(paper.href);
+        });
+
+        const meta = document.createElement('div');
+        meta.className = 'result-meta';
+        meta.textContent = paper.meta + (paper.citedText ? '  ·  ' + paper.citedText : '');
+
+        const actions = document.createElement('div');
+        actions.className = 'paper-actions';
+        if (paper.clusterId) {
+            actions.appendChild(makeActionButton('Cite', 'https://scholar.google.com/scholar?output=cite&cluster=' + paper.clusterId));
+            actions.appendChild(makeActionButton('BibTeX', 'https://scholar.google.com/scholar.bib?hl=en&cluster=' + paper.clusterId));
+        }
+        if (paper.citedHref) {
+            actions.appendChild(makeActionButton('Cited by', absoluteScholar(paper.citedHref)));
+        }
+        if (paper.relatedHref) {
+            actions.appendChild(makeActionButton('Related', absoluteScholar(paper.relatedHref)));
+        }
+
+        card.appendChild(label);
+        card.appendChild(title);
+        card.appendChild(meta);
+        if (actions.firstChild) card.appendChild(actions);
+        return card;
+    }
+
+    function renderResultItem(paper) {
+        const item = document.createElement('div');
+        item.className = 'result-item';
+
+        const title = document.createElement('a');
+        title.className = 'result-title';
+        title.textContent = paper.title;
+        title.addEventListener('click', function() {
+            if (paper.href) openTab(paper.href);
+        });
+
+        const meta = document.createElement('div');
+        meta.className = 'result-meta';
+        meta.textContent = paper.meta + (paper.citedText ? '  ·  ' + paper.citedText : '');
+
+        item.appendChild(title);
+        item.appendChild(meta);
+        return item;
+    }
+
+    function renderResults(text) {
+        const papers = parseResults(text);
+        clearResults();
+
+        if (papers.length === 0) {
             setStatus('No results found.');
             return;
         }
 
-        blocks.forEach(function(block) {
-            const titleEl = block.querySelector('.gs_rt a') || block.querySelector('.gs_rt');
-            const metaEl = block.querySelector('.gs_a');
-            const citedEl = Array.from(block.querySelectorAll('.gs_fl a'))
-                .find(function(a) { return /Cited by/i.test(a.textContent); });
+        resultsBox.appendChild(renderPaperCard(papers[0]));
 
-            const item = document.createElement('div');
-            item.className = 'result-item';
-
-            const title = document.createElement('a');
-            title.className = 'result-title';
-            title.textContent = titleEl ? titleEl.textContent.trim() : '(untitled)';
-            const href = titleEl && titleEl.tagName === 'A' ? titleEl.getAttribute('href') : null;
-            title.addEventListener('click', function() {
-                if (href) openTab(href.indexOf('http') === 0 ? href : 'https://scholar.google.com' + href);
+        if (papers.length > 1) {
+            const divider = document.createElement('div');
+            divider.className = 'results-divider';
+            resultsBox.appendChild(divider);
+            papers.slice(1).forEach(function(paper) {
+                resultsBox.appendChild(renderResultItem(paper));
             });
-
-            const meta = document.createElement('div');
-            meta.className = 'result-meta';
-            meta.textContent = metaEl ? metaEl.textContent.trim() : '';
-
-            if (citedEl) {
-                const cited = document.createElement('span');
-                cited.className = 'result-cited';
-                cited.textContent = '  ·  ' + citedEl.textContent.trim().replace(/\s+/g, ' ');
-                meta.appendChild(cited);
-            }
-
-            item.appendChild(title);
-            item.appendChild(meta);
-            resultsBox.appendChild(item);
-        });
+        }
 
         const more = document.createElement('a');
         more.className = 'results-link';
@@ -94,6 +177,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function detectPaperQuery(callback) {
+        try {
+            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                const tab = tabs && tabs[0];
+                if (!tab || !tab.url || !tab.title) { callback(null); return; }
+                let url;
+                try { url = new URL(tab.url); } catch (_e) { callback(null); return; }
+                const host = url.hostname;
+                const title = tab.title;
+
+                if (host === 'arxiv.org' && url.pathname.indexOf('/abs/') === 0) {
+                    const cleaned = title.replace(/^\[[^\]]*\]\s*/, '').replace(/\s*[-–|]\s*arXiv.*$/i, '').trim();
+                    callback(cleaned.length > 8 ? cleaned : null);
+                    return;
+                }
+                if (host.indexOf('scholar.google.') === 0 &&
+                    (url.searchParams.get('view_op') === 'view_citation' || url.pathname.indexOf('/citations') === 0)) {
+                    const cleaned = title.replace(/\s*[-–|]\s*Google Scholar.*$/i, '').trim();
+                    if (cleaned.length > 8 && !/^citations$/i.test(cleaned)) { callback(cleaned); return; }
+                }
+                callback(null);
+            });
+        } catch (_error) {
+            callback(null);
+        }
+    }
+
     input.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -118,6 +228,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (query) openTab('https://arxiv.org/search/?query=' + encodeURIComponent(query) + '&searchtype=all');
     });
 
+    githubButton.addEventListener('click', function() {
+        openTab(repoUrl);
+    });
+
     function updateEngineState() {
         const hasQuery = input.value.trim().length > 0;
         [githubSearchButton, hfSearchButton, arxivSearchButton].forEach(function(button) {
@@ -127,11 +241,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     input.addEventListener('input', updateEngineState);
-    updateEngineState();
-
-    githubButton.addEventListener('click', function() {
-        openTab(repoUrl);
-    });
 
     // Surface the version on the logo tooltip only.
     try {
@@ -143,5 +252,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Tooltip keeps its static fallback.
     }
 
-    input.focus();
+    // On a paper page (arXiv abstract, Scholar citation view), prefill and search.
+    detectPaperQuery(function(query) {
+        if (query) {
+            input.value = query;
+            updateEngineState();
+            searchScholar();
+        } else {
+            input.focus();
+        }
+    });
 });
