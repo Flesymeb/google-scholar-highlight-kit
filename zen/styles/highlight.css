@@ -45,7 +45,7 @@
 .author-highlighter-controls {
   background: #fff;
   border: 1px solid #d1d9e0;
-  border-radius: 6px;
+  border-radius: 0;
   padding: 0;
   margin-bottom: 14px;
   position: relative;
@@ -54,7 +54,12 @@
   line-height: 1.45;
   box-sizing: border-box;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* Tooltip must be able to escape the panel box */
+.author-highlighter-controls .info-icon::before {
+  z-index: 10001;
 }
 
 /* GitHub-style sidebar layout */
@@ -371,24 +376,24 @@
 .info-icon::before {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: 150%;
-  left: 50%;
-  transform: translateX(-50%);
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
   background-color: #333;
   color: #fff;
   padding: 8px 14px;
   border-radius: 6px;
-  white-space: pre;
   font-size: 13px;
   font-weight: normal;
   line-height: 1.5;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  z-index: 10000;
+  z-index: 10001;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   text-align: left;
-  min-width: 300px;
+  width: 300px;
+  white-space: pre-wrap;
 }
 
 .info-icon:hover::before {

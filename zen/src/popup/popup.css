@@ -184,7 +184,7 @@ body {
 
 .paper-bottom {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 10px;
   margin-top: 9px;
