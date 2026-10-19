@@ -12,9 +12,9 @@
 }
 
 body {
-  width: 300px;
+  width: 248px;
   margin: 0;
-  padding: 20px 18px 14px;
+  padding: 16px 16px 12px;
   box-sizing: border-box;
   font-family: "Segoe UI", system-ui, Arial, sans-serif;
   background:
@@ -28,7 +28,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .logo {
@@ -96,31 +96,13 @@ h1 {
   outline-offset: 2px;
 }
 
-.description {
-  margin: 0 0 12px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-.privacy-note {
-  margin: 0;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: #f8f9fa;
-  border: 1px solid var(--line);
-  color: #53627a;
-  font-size: 11px;
-  line-height: 1.5;
-}
-
 .footer {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 6px;
-  margin-top: 16px;
-  padding-top: 10px;
+  margin-top: 12px;
+  padding-top: 9px;
   border-top: 1px solid var(--line);
   color: #9aa0a6;
   font-size: 10.5px;
