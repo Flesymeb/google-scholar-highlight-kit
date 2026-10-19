@@ -6,14 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
         chrome.tabs.create({ url: repoUrl });
     });
 
-    // Keep the footer version label in sync with the manifest.
+    // Surface the version on the logo tooltip only.
     try {
-        const label = document.getElementById('version-label');
-        if (label) {
-            const version = chrome.runtime.getManifest().version;
-            label.textContent = 'v' + version;
+        const logo = document.getElementById('logo');
+        if (logo) {
+            logo.title = 'Scholar Highlight Kit v' + chrome.runtime.getManifest().version;
         }
     } catch (_error) {
-        // Footer keeps its static fallback.
+        // Tooltip keeps its static fallback.
     }
 });
