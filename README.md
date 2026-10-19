@@ -13,6 +13,13 @@ profile pages, with metrics, filters, and screenshots. Built for Zen / Firefox.
 - Last-author detection via public metadata (OpenAlex, Crossref, DataCite,
   arXiv) with local caching and rate limiting
 
+## Demo
+
+Try it on a dense publication list, for example
+[Geoffrey Hinton](https://scholar.google.com/citations?user=JicYPdAAAAAJ&hl=en)
+or [Yann LeCun](https://scholar.google.com/citations?user=WLN3QrAAAAAJ&hl=en) —
+first, co-first, corresponding, and last-author papers light up instantly.
+
 ## Install
 
 **Zen / Firefox (temporary, until restart):** open
