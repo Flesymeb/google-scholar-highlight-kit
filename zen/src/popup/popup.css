@@ -22,45 +22,53 @@ body {
 }
 
 .search-row {
+  position: relative;
   display: flex;
-  gap: 6px;
 }
 
 .search-input {
   flex: 1;
   min-width: 0;
   height: 32px;
-  padding: 0 10px;
-  border: 1px solid #c9d1d9;
+  padding: 0 34px 0 10px;
+  border: 1px solid var(--line);
   border-radius: 6px;
   font-size: 13px;
   color: var(--ink);
   background: #fff;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(26, 95, 208, 0.14);
+  border-color: #b7c0c8;
 }
 
-.engine-btn.primary {
-  height: 32px;
-  padding: 0 12px;
-  border: 1px solid #1f2328;
-  border-radius: 6px;
-  background: #1f2328;
-  color: #fff;
-  font: 500 12px "Segoe UI", system-ui, Arial, sans-serif;
+.search-go {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #9aa0a6;
   cursor: pointer;
 }
 
-.engine-btn.primary:hover {
-  background: #38404a;
+.search-go:hover {
+  color: #3c4043;
+  background: #f1f3f4;
 }
 
-.engine-btn:focus-visible,
+.search-go:focus-visible,
 .icon-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
@@ -73,6 +81,7 @@ body {
   justify-content: flex-end;
   gap: 5px;
   margin-top: 7px;
+  margin-right: 13px; /* align right edge with the card's inner content edge */
   min-height: 30px;
 }
 

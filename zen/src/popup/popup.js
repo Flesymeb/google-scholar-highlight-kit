@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const platformRow = document.getElementById('platform-row');
 
     const repoUrl = 'https://github.com/Flesymeb/google-scholar-highlight-kit';
+    let lastDetectedArxiv = null;
 
     function openTab(url) {
         chrome.tabs.create({ url: url });
@@ -66,9 +67,11 @@ document.addEventListener('DOMContentLoaded', function() {
         platformRow.hidden = !paper;
         if (!paper) return;
 
-        // arXiv: the Scholar result already links the preprint when one exists.
-        if (paper.arxivHref) {
-            setPlatformIcon(arxivSearchButton, true, paper.arxivHref);
+        // arXiv: prefer the link Scholar itself returned; fall back to the
+        // page we auto-detected the paper from (an arXiv abstract page).
+        const arxivHref = paper.arxivHref || lastDetectedArxiv;
+        if (arxivHref) {
+            setPlatformIcon(arxivSearchButton, true, arxivHref);
         }
 
         const title = paper.title;
@@ -87,9 +90,28 @@ document.addEventListener('DOMContentLoaded', function() {
         return btn;
     }
 
+    function extractArxivHref(rowEl) {
+        if (!rowEl) return null;
+        const anchors = Array.from(rowEl.querySelectorAll('a'));
+        for (const a of anchors) {
+            let href = a.getAttribute('href') || '';
+            if (!href) continue;
+            // Scholar wraps outbound links: scholar.google.com/scholar_url?url=<encoded>
+            const wrapped = href.match(/[?&]url=([^&]+)/);
+            if (wrapped) {
+                try { href = decodeURIComponent(wrapped[1]); } catch (_e) { /* keep raw */ }
+            }
+            if (/^https?:\/\/arxiv\.org\//.test(href)) {
+                return href.replace('/pdf/', '/abs/');
+            }
+        }
+        return null;
+    }
+
     function parseResults(text) {
         const doc = new DOMParser().parseFromString(text, 'text/html');
-        return Array.from(doc.querySelectorAll('.gs_r .gs_ri')).slice(0, 6).map(function(block) {
+        return Array.from(doc.querySelectorAll('.gs_r')).slice(0, 6).map(function(row) {
+            const block = row.querySelector('.gs_ri') || row;
             const titleEl = block.querySelector('.gs_rt a') || block.querySelector('.gs_rt');
             const metaEl = block.querySelector('.gs_a');
             const links = Array.from(block.querySelectorAll('.gs_fl a'));
@@ -104,6 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const arxivAnchor = Array.from(block.querySelectorAll('a'))
                 .find(function(a) { return /^https?:\/\/arxiv\.org\//.test(a.getAttribute('href') || ''); });
+            let arxivHref = arxivAnchor
+                ? arxivAnchor.getAttribute('href').replace('/pdf/', '/abs/')
+                : extractArxivHref(row);
 
             const href = titleEl && titleEl.tagName === 'A' ? titleEl.getAttribute('href') : null;
             return {
@@ -114,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 citedHref: citedLink ? citedLink.getAttribute('href') : null,
                 relatedHref: relatedLink ? relatedLink.getAttribute('href') : null,
                 clusterId: clusterId,
-                arxivHref: arxivAnchor ? arxivAnchor.getAttribute('href') : null
+                arxivHref: arxivHref || null
             };
         });
     }
@@ -251,37 +276,41 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
                 const tab = tabs && tabs[0];
-                if (!tab || !tab.url || !tab.title) { callback(null); return; }
+                if (!tab || !tab.url || !tab.title) { callback(null, null); return; }
                 let url;
-                try { url = new URL(tab.url); } catch (_e) { callback(null); return; }
+                try { url = new URL(tab.url); } catch (_e) { callback(null, null); return; }
                 const host = url.hostname;
                 const title = tab.title;
 
                 if (host === 'arxiv.org' && url.pathname.indexOf('/abs/') === 0) {
                     const cleaned = title.replace(/^\[[^\]]*\]\s*/, '').replace(/\s*[-–|]\s*arXiv.*$/i, '').trim();
-                    callback(cleaned.length > 8 ? cleaned : null);
+                    callback(cleaned.length > 8 ? cleaned : null, tab.url);
                     return;
                 }
                 if (host.indexOf('scholar.google.') === 0 &&
                     (url.searchParams.get('view_op') === 'view_citation' || url.pathname.indexOf('/citations') === 0)) {
                     const cleaned = title.replace(/\s*[-–|]\s*Google Scholar.*$/i, '').trim();
-                    if (cleaned.length > 8 && !/^citations$/i.test(cleaned)) { callback(cleaned); return; }
+                    if (cleaned.length > 8 && !/^citations$/i.test(cleaned)) { callback(cleaned, null); return; }
                 }
-                callback(null);
+                callback(null, null);
             });
         } catch (_error) {
-            callback(null);
+            callback(null, null);
         }
     }
 
     input.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
+            lastDetectedArxiv = null;
             searchScholar();
         }
     });
 
-    scholarButton.addEventListener('click', searchScholar);
+    scholarButton.addEventListener('click', function() {
+        lastDetectedArxiv = null;
+        searchScholar();
+    });
 
     // Platform icons only act on confirmed availability of the current paper.
     [githubSearchButton, hfSearchButton, arxivSearchButton].forEach(function(button) {
@@ -305,7 +334,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // On a paper page (arXiv abstract, Scholar citation view), prefill and search.
-    detectPaperQuery(function(query) {
+    detectPaperQuery(function(query, arxivUrl) {
+        lastDetectedArxiv = arxivUrl || null;
         if (query) {
             input.value = query;
             searchScholar();

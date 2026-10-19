@@ -9,7 +9,11 @@
 <body>
   <div class="search-row">
     <input id="search-input" class="search-input" type="text" placeholder="Search papers…" autocomplete="off" autofocus>
-    <button id="scholar-button" class="engine-btn primary" type="button" title="Search Google Scholar (Enter)">Scholar</button>
+    <button id="scholar-button" class="search-go" type="button" title="Search Google Scholar (Enter)" aria-label="Search Google Scholar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+      </svg>
+    </button>
   </div>
 
   <div id="platform-row" class="platform-row" hidden>
