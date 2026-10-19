@@ -4,7 +4,7 @@ A browser extension for Google Scholar: highlights papers by authorship role
 on profile pages, and adds a toolbar search that looks up the current paper
 across Google Scholar, arXiv, GitHub and Hugging Face.
 
-![Popup](docs/popup-preview.png)
+![Popup](docs/screenshot-popup.png)
 
 On a paper page the popup detects the paper automatically; the badges show
 where its preprint, code, and model live.
@@ -22,7 +22,7 @@ where its preprint, code, and model live.
   filters by role and year
 - Screenshot of the filtered list (copy or download)
 
-![On-page panel](docs/demo-preview.png)
+![On-page panel](docs/screenshot-profile.png)
 
 Works on every Google Scholar language domain, including community mirrors
 that keep Scholar's DOM.
