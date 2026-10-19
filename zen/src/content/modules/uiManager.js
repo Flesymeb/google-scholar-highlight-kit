@@ -14,15 +14,11 @@ window.uiManager = (function () {
           <button type="button" id="ahk-reset" class="ahk-reset" title="Reset filters">Reset</button>
         </div>
         <div class="ahk-roles">
-          <div class="ahk-col">
-            <label class="ahk-check"><input type="checkbox" id="first-author-filter" checked><span>First</span></label>
-            <label class="ahk-check"><input type="checkbox" id="second-author-filter" checked><span>Second</span></label>
-            <label class="ahk-check"><input type="checkbox" id="last-author-filter" checked><span>Last</span></label>
-          </div>
-          <div class="ahk-col">
-            <label class="ahk-check"><input type="checkbox" id="co-first-author-filter" checked><span>Co-First</span></label>
-            <label class="ahk-check"><input type="checkbox" id="corresponding-author-filter" checked><span>Corr.</span></label>
-          </div>
+          <label class="ahk-check"><input type="checkbox" id="first-author-filter" checked><span>First</span></label>
+          <label class="ahk-check"><input type="checkbox" id="co-first-author-filter" checked><span>Co-First</span></label>
+          <label class="ahk-check"><input type="checkbox" id="second-author-filter" checked><span>Second</span></label>
+          <label class="ahk-check"><input type="checkbox" id="corresponding-author-filter" checked><span>Corr.</span></label>
+          <label class="ahk-check"><input type="checkbox" id="last-author-filter" checked><span>Last</span></label>
         </div>
         <div class="ahk-row"><span class="ahk-label">Show only highlighted</span><input type="checkbox" id="visibility-toggle" class="ahk-toggle"></div>
         <div class="ahk-row"><span class="ahk-label">Highlight author name</span><input type="checkbox" id="highlight-name-toggle" class="ahk-toggle"></div>

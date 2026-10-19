@@ -91,17 +91,11 @@
 }
 
 .ahk-roles {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
   padding: 8px 12px;
   border-bottom: 1px solid #d1d9e0;
-}
-
-.ahk-col {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
 }
 
 .ahk-check {
@@ -112,6 +106,23 @@
   color: #1f2328;
   cursor: pointer;
   white-space: nowrap;
+}
+
+/* Keep First / Co-First / Second on the first line */
+.ahk-check:nth-child(-n + 3) {
+  margin-right: 4px;
+}
+
+.ahk-roles::after {
+  content: "";
+  flex-basis: 100%;
+  height: 0;
+  order: 3;
+}
+
+.ahk-check:nth-child(4),
+.ahk-check:nth-child(5) {
+  order: 4;
 }
 
 .ahk-check input,
