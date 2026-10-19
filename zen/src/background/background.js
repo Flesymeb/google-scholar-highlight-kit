@@ -249,6 +249,52 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
+  if (request.action === 'paperPlatformCheck') {
+    const kind = request.kind === 'github' || request.kind === 'huggingface' ? request.kind : null;
+    const query = String(request.query || '').trim().slice(0, 200);
+    if (!kind || query.length < 4) {
+      sendResponse({ ok: false, error: 'Invalid platform check.' });
+      return false;
+    }
+    let url;
+    if (kind === 'github') {
+      url = 'https://api.github.com/search/repositories?q=' + encodeURIComponent(query) +
+        '&sort=stars&order=desc&per_page=3';
+    } else {
+      const shortQuery = query.split(/\s+/).slice(0, 6).join(' ');
+      url = 'https://huggingface.co/api/models?search=' + encodeURIComponent(shortQuery) + '&limit=5';
+    }
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    fetch(url, {
+      method: 'GET',
+      headers: kind === 'github'
+        ? { Accept: 'application/json', 'User-Agent': 'scholar-highlight-kit' }
+        : { Accept: 'application/json' },
+      signal: controller.signal
+    }).then(async (response) => {
+      if (!response.ok) {
+        sendResponse({ ok: false, status: response.status });
+        return;
+      }
+      const data = await response.json();
+      if (kind === 'github') {
+        const top = data && data.items && data.items[0];
+        sendResponse(top
+          ? { ok: true, found: true, url: top.html_url, label: top.full_name }
+          : { ok: true, found: false });
+      } else {
+        const top = Array.isArray(data) && data[0];
+        sendResponse(top
+          ? { ok: true, found: true, url: 'https://huggingface.co/' + top.id, label: top.id }
+          : { ok: true, found: false });
+      }
+    }).catch((_error) => {
+      sendResponse({ ok: false, status: 0, error: 'Platform check failed.' });
+    }).finally(() => clearTimeout(timeout));
+    return true;
+  }
+
   if (request.action !== 'captureTab') {
     return false;
   }

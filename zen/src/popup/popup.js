@@ -29,6 +29,51 @@ document.addEventListener('DOMContentLoaded', function() {
         resultsBox.appendChild(row);
     }
 
+    // Platform icons are availability indicators for the detected paper:
+    // gray = not found / unknown, colored = available and click opens it.
+    function setPlatformIcon(button, available, url) {
+        button.classList.toggle('active', !!available);
+        button.disabled = !available;
+        if (available && url) {
+            button.dataset.url = url;
+        } else {
+            delete button.dataset.url;
+        }
+    }
+
+    function resetPlatformIcons() {
+        [githubSearchButton, hfSearchButton, arxivSearchButton].forEach(function(button) {
+            setPlatformIcon(button, false, null);
+        });
+    }
+
+    function checkPlatform(kind, query, button) {
+        chrome.runtime.sendMessage({ action: 'paperPlatformCheck', kind: kind, query: query }, function(response) {
+            if (chrome.runtime.lastError || !response || !response.ok || !response.found) {
+                setPlatformIcon(button, false, null);
+                return;
+            }
+            setPlatformIcon(button, true, response.url);
+            if (response.label) {
+                button.title = response.label;
+            }
+        });
+    }
+
+    function updatePlatformAvailability(paper) {
+        resetPlatformIcons();
+        if (!paper) return;
+
+        // arXiv: the Scholar result already links the preprint when one exists.
+        if (paper.arxivHref) {
+            setPlatformIcon(arxivSearchButton, true, paper.arxivHref);
+        }
+
+        const title = paper.title;
+        checkPlatform('github', title, githubSearchButton);
+        checkPlatform('huggingface', title, hfSearchButton);
+    }
+
     function makeActionButton(label, url) {
         const btn = document.createElement('button');
         btn.className = 'paper-action';
@@ -55,6 +100,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (match) clusterId = match[1];
             }
 
+            const arxivAnchor = Array.from(block.querySelectorAll('a'))
+                .find(function(a) { return /^https?:\/\/arxiv\.org\//.test(a.getAttribute('href') || ''); });
+
             const href = titleEl && titleEl.tagName === 'A' ? titleEl.getAttribute('href') : null;
             return {
                 title: titleEl ? titleEl.textContent.trim() : '(untitled)',
@@ -63,7 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 citedText: citedLink ? citedLink.textContent.trim().replace(/\s+/g, ' ') : '',
                 citedHref: citedLink ? citedLink.getAttribute('href') : null,
                 relatedHref: relatedLink ? relatedLink.getAttribute('href') : null,
-                clusterId: clusterId
+                clusterId: clusterId,
+                arxivHref: arxivAnchor ? arxivAnchor.getAttribute('href') : null
             };
         });
     }
@@ -138,10 +187,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (papers.length === 0) {
             setStatus('No results found.');
+            updatePlatformAvailability(null);
             return;
         }
 
         resultsBox.appendChild(renderPaperCard(papers[0]));
+        updatePlatformAvailability(papers[0]);
 
         if (papers.length > 1) {
             const divider = document.createElement('div');
@@ -171,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
         chrome.runtime.sendMessage({ action: 'scholarSearch', query: query }, function(response) {
             if (chrome.runtime.lastError || !response || !response.ok) {
                 setStatus('Search failed. Try again or open in Google Scholar.');
+                updatePlatformAvailability(null);
                 return;
             }
             renderResults(response.text);
@@ -213,34 +265,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     scholarButton.addEventListener('click', searchScholar);
 
-    githubSearchButton.addEventListener('click', function() {
-        const query = input.value.trim();
-        if (query) openTab('https://github.com/search?q=' + encodeURIComponent(query));
-    });
-
-    hfSearchButton.addEventListener('click', function() {
-        const query = input.value.trim();
-        if (query) openTab('https://huggingface.co/search?q=' + encodeURIComponent(query));
-    });
-
-    arxivSearchButton.addEventListener('click', function() {
-        const query = input.value.trim();
-        if (query) openTab('https://arxiv.org/search/?query=' + encodeURIComponent(query) + '&searchtype=all');
+    // Platform icons only act on confirmed availability of the current paper.
+    [githubSearchButton, hfSearchButton, arxivSearchButton].forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (button.dataset.url) openTab(button.dataset.url);
+        });
     });
 
     githubButton.addEventListener('click', function() {
         openTab(repoUrl);
     });
-
-    function updateEngineState() {
-        const hasQuery = input.value.trim().length > 0;
-        [githubSearchButton, hfSearchButton, arxivSearchButton].forEach(function(button) {
-            button.classList.toggle('active', hasQuery);
-            button.disabled = !hasQuery;
-        });
-    }
-
-    input.addEventListener('input', updateEngineState);
 
     // Surface the version on the logo tooltip only.
     try {
@@ -256,7 +290,6 @@ document.addEventListener('DOMContentLoaded', function() {
     detectPaperQuery(function(query) {
         if (query) {
             input.value = query;
-            updateEngineState();
             searchScholar();
         } else {
             input.focus();

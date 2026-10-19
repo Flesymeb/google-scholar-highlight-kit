@@ -73,12 +73,14 @@ body {
   color: #24292f;
 }
 
-.icon-btn.active.btn-hf {
-  color: #e8a30d;
-}
-
 .icon-btn.active.btn-arxiv {
   color: #b31b1b;
+}
+
+/* Solid colored Hugging Face logo: dim via filter, not color. */
+.btn-hf:not(.active) {
+  filter: grayscale(1);
+  opacity: 0.45;
 }
 
 .icon-btn.active:hover {
