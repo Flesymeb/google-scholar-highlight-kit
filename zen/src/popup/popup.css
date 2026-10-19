@@ -1,8 +1,9 @@
 :root {
   color-scheme: light;
-  --accent: #1a73e8;
+  --accent: #0969da;
   --ink: #1f2328;
-  --line: #e8eaed;
+  --muted: #59636e;
+  --line: #d1d9e0;
   --card: #ffffff;
 }
 
@@ -11,58 +12,175 @@
 }
 
 body {
-  width: 148px;
+  width: 340px;
   margin: 0;
-  padding: 14px;
+  padding: 12px;
   box-sizing: border-box;
   font-family: "Segoe UI", system-ui, Arial, sans-serif;
-  background:
-    radial-gradient(160px 90px at 85% -10%, rgba(26, 115, 232, 0.08), transparent 70%),
-    radial-gradient(120px 80px at -10% 0%, rgba(188, 170, 255, 0.10), transparent 70%),
-    var(--card);
+  background: var(--card);
   color: var(--ink);
 }
 
-.header {
+.search-row {
+  display: flex;
+  gap: 6px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
+}
+
+.engine-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.engine-btn {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #f6f8fa;
+  color: var(--ink);
+  font: 500 12px "Segoe UI", system-ui, Arial, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.engine-btn:hover {
+  background: #eef1f4;
+  border-color: #b8c4cc;
+}
+
+.engine-btn:active {
+  background: #e4e9ed;
+}
+
+.engine-btn.primary {
+  height: 30px;
+  background: #1f2328;
+  border-color: #1f2328;
+  color: #fff;
+}
+
+.engine-btn.primary:hover {
+  background: #38404a;
+}
+
+.engine-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.results {
+  margin-top: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.result-item {
+  padding: 7px 2px;
+  border-bottom: 1px solid #eaeef2;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-title {
+  display: block;
+  color: var(--accent);
+  font-size: 12.5px;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.result-title:hover {
+  text-decoration: underline;
+}
+
+.result-meta {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.result-cited {
+  color: #7a828a;
+}
+
+.results-status {
+  padding: 8px 2px;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+.results-link {
+  display: block;
+  margin: 6px 2px 0;
+  color: var(--accent);
+  font-size: 11.5px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.results-link:hover {
+  text-decoration: underline;
+}
+
+.foot-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #eaeef2;
 }
 
 .logo {
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.20);
+  width: 16px;
+  height: 16px;
 }
 
 .github-icon-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 24px;
+  height: 24px;
   padding: 0;
-  border: 1px solid var(--line);
-  border-radius: 9px;
+  border: 0;
+  border-radius: 6px;
   background: transparent;
-  color: #57606a;
+  color: #7a828a;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+  transition: color 0.15s, background-color 0.15s;
 }
 
 .github-icon-btn:hover {
   color: #24292f;
-  border-color: #d0d7de;
-  background: #f6f8fa;
-}
-
-.github-icon-btn:active {
-  background: #eff2f5;
+  background: #f0f2f4;
 }
 
 .github-icon-btn:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: 1px;
 }

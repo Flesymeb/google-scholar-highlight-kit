@@ -227,6 +227,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
+  if (request.action === 'scholarSearch') {
+    const query = String(request.query || '').trim().slice(0, 300);
+    if (!query) {
+      sendResponse({ ok: false, status: 400, error: 'Empty query.' });
+      return false;
+    }
+    const url = 'https://scholar.google.com/scholar?q=' + encodeURIComponent(query);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    fetch(url, {
+      method: 'GET',
+      headers: { Accept: 'text/html' },
+      signal: controller.signal
+    }).then(async (response) => {
+      const text = response.ok ? await response.text() : null;
+      sendResponse({ ok: response.ok, status: response.status, text });
+    }).catch((_error) => {
+      sendResponse({ ok: false, status: 0, error: 'Scholar request failed.' });
+    }).finally(() => clearTimeout(timeout));
+    return true;
+  }
+
   if (request.action !== 'captureTab') {
     return false;
   }
