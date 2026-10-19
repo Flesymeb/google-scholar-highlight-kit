@@ -47,36 +47,54 @@ body {
 
 .engine-row {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   margin-top: 6px;
 }
 
-.engine-btn {
-  height: 28px;
-  padding: 0 10px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: #f6f8fa;
-  color: var(--ink);
-  font: 500 12px "Segoe UI", system-ui, Arial, sans-serif;
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #c4cad1;
+  cursor: default;
+}
+
+.icon-btn.active {
   cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s;
 }
 
-.engine-btn:hover {
-  background: #eef1f4;
-  border-color: #b8c4cc;
+.icon-btn.active.btn-github {
+  color: #24292f;
 }
 
-.engine-btn:active {
-  background: #e4e9ed;
+.icon-btn.active.btn-hf {
+  color: #e8a30d;
+}
+
+.icon-btn.active:hover {
+  background: #f0f2f4;
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 .engine-btn.primary {
   height: 30px;
+  padding: 0 12px;
+  border: 1px solid #1f2328;
+  border-radius: 6px;
   background: #1f2328;
-  border-color: #1f2328;
   color: #fff;
+  font: 500 12px "Segoe UI", system-ui, Arial, sans-serif;
+  cursor: pointer;
 }
 
 .engine-btn.primary:hover {

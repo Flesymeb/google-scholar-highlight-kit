@@ -112,6 +112,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (query) openTab('https://huggingface.co/search?q=' + encodeURIComponent(query));
     });
 
+    function updateEngineState() {
+        const hasQuery = input.value.trim().length > 0;
+        [githubSearchButton, hfSearchButton].forEach(function(button) {
+            button.classList.toggle('active', hasQuery);
+            button.disabled = !hasQuery;
+        });
+    }
+
+    input.addEventListener('input', updateEngineState);
+    updateEngineState();
+
     githubButton.addEventListener('click', function() {
         openTab(repoUrl);
     });
