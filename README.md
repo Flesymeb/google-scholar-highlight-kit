@@ -22,8 +22,6 @@ where its preprint, code, and model live.
   filters by role and year
 - Screenshot of the filtered list (copy or download)
 
-![On-page panel](docs/screenshot-profile.png)
-
 Works on every Google Scholar language domain, including community mirrors
 that keep Scholar's DOM.
 
